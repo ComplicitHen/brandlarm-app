@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Brandlarm",
+    "slug": "brandlarm-app",
+    "version": "1.0.3",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.brandkaren.larmapp",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio", "fetch", "remote-notification"],
+        "NSMicrophoneUsageDescription": "Vi spelar alarmljud även när appen är i bakgrunden",
+        "NSUserTrackingUsageDescription": "Vi behöver inga tracking-permissions",
+        "NSCameraUsageDescription": "Kameran används inte av denna app"
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.brandkaren.larmapp",
+      "versionCode": 4,
+      "permissions": ["READ_SMS", "RECEIVE_SMS", "VIBRATE"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9f30fca5-bd1d-44c2-b0fc-2fc5d749de0f"
+      }
+    }
+  }
+}

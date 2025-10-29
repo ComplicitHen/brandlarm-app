@@ -1,0 +1,61 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "alarms": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$alarmId": {
+        ".validate": "newData.hasChildren(['timestamp', 'userId', 'category'])",
+        "timestamp": {
+          ".validate": "newData.isNumber() && newData.val() <= now"
+        },
+        "userId": {
+          ".validate": "newData.val() === auth.uid"
+        },
+        "userName": {
+          ".validate": "newData.isString()"
+        },
+        "category": {
+          ".validate": "newData.isString()"
+        },
+        "station": {
+          ".validate": "newData.isString()"
+        },
+        "isTotalAlarm": {
+          ".validate": "newData.isBoolean()"
+        },
+        "sender": {
+          ".validate": "newData.isString()"
+        },
+        "rawMessage": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+
+    "userStatus": {
+      ".read": "auth != null",
+      "$userId": {
+        ".write": "auth != null && auth.uid === $userId",
+        ".validate": "newData.hasChildren(['lastUpdated', 'userId'])",
+        "lastUpdated": {
+          ".validate": "newData.isNumber() && newData.val() <= now"
+        },
+        "userId": {
+          ".validate": "newData.val() === auth.uid"
+        },
+        "userName": {
+          ".validate": "newData.isString()"
+        },
+        "isMonitoring": {
+          ".validate": "newData.isBoolean()"
+        },
+        "onlyTotalAlarm": {
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    }
+  }
+}

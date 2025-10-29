@@ -1,0 +1,54 @@
+{
+  "cli": {
+    "version": ">= 5.4.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "EAS_SKIP_AUTO_FINGERPRINT": "1"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "EAS_BUILD_SKIP_PREBUILD": "1"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "autoIncrement": true
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "DIN_APPLE_ID@example.com",
+        "ascAppId": "DIN_APP_STORE_CONNECT_APP_ID",
+        "appleTeamId": "DITT_TEAM_ID"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./android-service-account.json",
+        "track": "production"
+      }
+    }
+  }
+}
