@@ -28,6 +28,9 @@ jobs:
       - name: Installera npm-beroenden
         run: npm install --legacy-peer-deps
 
+      - name: Ta bort dev-verktyg (minskar APK-storlek ~50MB)
+        run: npm uninstall expo-dev-client expo-dev-launcher expo-dev-menu --legacy-peer-deps
+
       - name: Generera Android-projekt (expo prebuild)
         run: npx expo prebuild --platform android --clean --no-install
 
