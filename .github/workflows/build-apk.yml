@@ -21,7 +21,7 @@ jobs:
           cache: npm
 
       - name: Installera beroenden
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Sätt upp Expo / EAS CLI
         run: npm install -g eas-cli
