@@ -1,0 +1,44 @@
+name: Bygg Android APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Bygg APK (EAS)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checka ut kod
+        uses: actions/checkout@v4
+
+      - name: Sätt upp Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Sätt upp Expo / EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Bygg APK via EAS
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          eas build \
+            --platform android \
+            --profile preview \
+            --non-interactive \
+            --output ./brandlarm-ny.apk
+
+      - name: Ladda upp APK som artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: brandlarm-apk
+          path: brandlarm-ny.apk
+          retention-days: 30

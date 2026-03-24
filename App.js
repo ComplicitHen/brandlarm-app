@@ -985,12 +985,12 @@ export default function App() {
         {deviceMode === 'active' ? (
           <>
             <View style={styles.switchContainer}>
-              <Text>Aktivera SMS-övervakning:</Text>
+              <Text style={styles.switchLabel}>Aktivera SMS-övervakning:</Text>
               <Switch
                 value={isMonitoring}
                 onValueChange={toggleMonitoring}
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={isMonitoring ? "#f5dd4b" : "#f4f3f4"}
+                trackColor={{ false: "#3A4A5A", true: "#FF3B30" }}
+                thumbColor={isMonitoring ? "#FFFFFF" : "#8E9BAE"}
               />
             </View>
             <Text style={styles.helpText}>
@@ -1029,12 +1029,12 @@ export default function App() {
         <Text style={styles.cardTitle}>Larminställningar</Text>
 
         <View style={styles.switchContainer}>
-          <Text>Endast TOTALLARM:</Text>
+          <Text style={styles.switchLabel}>Endast TOTALLARM:</Text>
           <Switch
             value={onlyTotalAlarm}
             onValueChange={toggleOnlyTotal}
-            trackColor={{ false: "#767577", true: "#ff6b6b" }}
-            thumbColor={onlyTotalAlarm ? "#ff0000" : "#f4f3f4"}
+            trackColor={{ false: "#3A4A5A", true: "#FF3B30" }}
+            thumbColor={onlyTotalAlarm ? "#FFFFFF" : "#8E9BAE"}
           />
         </View>
         <Text style={styles.helpText}>
@@ -1044,12 +1044,12 @@ export default function App() {
         </Text>
 
         <View style={[styles.switchContainer, styles.testModeContainer]}>
-          <Text>Testläge (alla avsändare):</Text>
+          <Text style={styles.switchLabel}>Testläge (alla avsändare):</Text>
           <Switch
             value={testMode}
             onValueChange={setTestMode}
-            trackColor={{ false: "#767577", true: "#ffa500" }}
-            thumbColor={testMode ? "#ff8c00" : "#f4f3f4"}
+            trackColor={{ false: "#3A4A5A", true: "#FF9500" }}
+            thumbColor={testMode ? "#FFFFFF" : "#8E9BAE"}
           />
         </View>
         {testMode && (
@@ -1116,11 +1116,11 @@ export default function App() {
 
       <View style={styles.testSection}>
         <Text style={styles.cardTitle}>Testfunktioner</Text>
-        <Button
-          title={testMode ? "Simulera test-SMS" : "Simulera larm från 3315"}
-          onPress={simulateSMS}
-          color="#ff6b6b"
-        />
+        <TouchableOpacity style={styles.simulateButton} onPress={simulateSMS}>
+          <Text style={styles.simulateButtonText}>
+            {testMode ? "🧪 Simulera test-SMS" : "🚨 Simulera larm från 3315"}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.settingsSection}>
@@ -1162,71 +1162,100 @@ export default function App() {
   );
 }
 
+// ─── Design Tokens ─────────────────────────────────────────────────────────
+const C = {
+  bg:           '#0D1B2A',
+  surface:      '#162536',
+  surfaceHigh:  '#1E3248',
+  border:       '#243F57',
+  accent:       '#FF3B30',
+  accentDim:    '#3D1210',
+  amber:        '#FF9500',
+  amberDim:     '#3D2400',
+  green:        '#30D158',
+  greenDim:     '#0D3320',
+  blue:         '#0A84FF',
+  blueDim:      '#0D2A4A',
+  textPrimary:  '#FFFFFF',
+  textSecondary:'#A0B4C8',
+  textMuted:    '#5C7A96',
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    padding: 20,
+    backgroundColor: C.bg,
+    padding: 16,
   },
   header: {
     alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 30,
+    marginTop: 48,
+    marginBottom: 24,
+    paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: C.border,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#d32f2f',
+    fontSize: 26,
+    fontWeight: '800',
+    color: C.textPrimary,
+    letterSpacing: 0.5,
   },
   subtitle: {
     fontSize: 14,
-    marginTop: 5,
-    color: '#666',
-    fontStyle: 'italic',
+    marginTop: 6,
+    color: C.textSecondary,
+    fontWeight: '500',
   },
   statusText: {
-    fontSize: 16,
+    fontSize: 15,
     marginTop: 10,
-    color: '#666',
-  },
-  firebaseStatus: {
-    fontSize: 12,
-    marginTop: 5,
-    color: '#4CAF50',
+    color: C.textSecondary,
     fontWeight: '600',
   },
+  firebaseStatus: {
+    fontSize: 13,
+    marginTop: 6,
+    color: C.green,
+    fontWeight: '700',
+  },
   scheduleStatus: {
-    fontSize: 12,
+    fontSize: 13,
     marginTop: 5,
-    color: '#2196F3',
+    color: C.blue,
     fontWeight: '600',
   },
   card: {
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    backgroundColor: C.surface,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: C.border,
   },
   cardHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 12,
+    color: C.textPrimary,
+    letterSpacing: 0.3,
   },
   viewAllButton: {
-    color: '#2196F3',
+    color: C.blue,
     fontSize: 14,
     fontWeight: '600',
+  },
+  switchLabel: {
+    fontSize: 15,
+    color: C.textPrimary,
+    fontWeight: '500',
+    flex: 1,
   },
   switchContainer: {
     flexDirection: 'row',
@@ -1235,250 +1264,293 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   testModeContainer: {
-    marginTop: 15,
-    paddingTop: 15,
+    marginTop: 14,
+    paddingTop: 14,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: C.border,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    padding: 10,
+    borderColor: C.border,
+    borderRadius: 12,
+    padding: 12,
     fontSize: 16,
+    color: C.textPrimary,
+    backgroundColor: C.surfaceHigh,
   },
   helpText: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 5,
-    fontStyle: 'italic',
+    fontSize: 13,
+    color: C.textSecondary,
+    marginTop: 6,
+    lineHeight: 18,
   },
   warningText: {
-    fontSize: 12,
-    color: '#ff8c00',
-    marginTop: 5,
-    fontWeight: 'bold',
+    fontSize: 13,
+    color: C.amber,
+    marginTop: 6,
+    fontWeight: '700',
+    backgroundColor: C.amberDim,
+    padding: 8,
+    borderRadius: 8,
   },
   smsText: {
     fontSize: 14,
-    color: '#333',
-    fontStyle: 'italic',
+    color: C.textSecondary,
+    lineHeight: 20,
   },
   recentAlarmItem: {
-    paddingVertical: 8,
+    paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: C.border,
   },
   recentAlarmTime: {
     fontSize: 12,
-    color: '#999',
+    color: C.textMuted,
+    fontWeight: '600',
   },
   recentAlarmCategory: {
-    fontSize: 14,
-    color: '#333',
-    marginTop: 2,
+    fontSize: 15,
+    color: C.textPrimary,
+    marginTop: 3,
+    fontWeight: '500',
   },
   soundSettingsButton: {
-    backgroundColor: '#2196F3',
-    borderRadius: 8,
-    padding: 12,
-    marginTop: 15,
+    backgroundColor: C.blueDim,
+    borderRadius: 12,
+    padding: 14,
+    marginTop: 14,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: C.blue,
   },
   soundSettingsButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
+    color: C.blue,
+    fontSize: 15,
+    fontWeight: '700',
   },
   timeSettingsButton: {
-    backgroundColor: '#9C27B0',
-    borderRadius: 8,
-    padding: 12,
+    backgroundColor: '#1F1040',
+    borderRadius: 12,
+    padding: 14,
     marginTop: 10,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#7B5EA7',
   },
   timeSettingsButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
+    color: '#C084FC',
+    fontSize: 15,
+    fontWeight: '700',
   },
   permissionIndicators: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 10,
-    paddingTop: 10,
+    marginTop: 12,
+    paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: C.border,
   },
   permissionIndicator: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 13,
+    color: C.textSecondary,
+    fontWeight: '600',
   },
   deviceModeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 12,
+    gap: 8,
   },
   modeButton: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    padding: 15,
-    marginHorizontal: 5,
+    backgroundColor: C.surfaceHigh,
+    borderRadius: 12,
+    padding: 14,
     borderWidth: 2,
-    borderColor: '#f5f5f5',
+    borderColor: C.border,
     alignItems: 'center',
   },
   modeButtonActive: {
-    backgroundColor: '#e3f2fd',
-    borderColor: '#2196F3',
+    backgroundColor: C.accentDim,
+    borderColor: C.accent,
   },
   modeButtonText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
+    fontWeight: '700',
+    color: C.textMuted,
     textAlign: 'center',
   },
   modeButtonTextActive: {
-    color: '#2196F3',
+    color: C.accent,
   },
   modeButtonDesc: {
-    fontSize: 11,
-    color: '#999',
-    marginTop: 5,
+    fontSize: 12,
+    color: C.textMuted,
+    marginTop: 4,
     textAlign: 'center',
   },
   passiveInfo: {
-    backgroundColor: '#e8f5e9',
-    borderRadius: 8,
-    padding: 15,
+    backgroundColor: C.greenDim,
+    borderRadius: 12,
+    padding: 14,
     marginBottom: 10,
+    borderWidth: 1,
+    borderColor: C.green,
   },
   passiveInfoText: {
     fontSize: 14,
-    color: '#2e7d32',
-    fontWeight: '600',
+    color: C.green,
+    fontWeight: '700',
     textAlign: 'center',
   },
   alarmButton: {
-    backgroundColor: '#ff0000',
-    borderRadius: 10,
-    padding: 20,
+    backgroundColor: C.accent,
+    borderRadius: 20,
+    padding: 22,
     alignItems: 'center',
     marginVertical: 20,
-    borderWidth: 3,
-    borderColor: '#ffffff',
+    shadowColor: C.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 10,
   },
   alarmButtonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: '900',
     textAlign: 'center',
+    letterSpacing: 1,
   },
   alarmSubText: {
-    color: 'white',
+    color: 'rgba(255,255,255,0.8)',
     fontSize: 14,
-    marginTop: 5,
+    marginTop: 6,
+    fontWeight: '500',
   },
   testSection: {
-    backgroundColor: '#fff3e0',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 15,
+    backgroundColor: C.amberDim,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: C.amber,
   },
-  settingsSection: {
-    marginBottom: 15,
-  },
-  settingsButton: {
-    backgroundColor: '#666',
-    borderRadius: 10,
-    padding: 12,
+  simulateButton: {
+    backgroundColor: C.amber,
+    borderRadius: 12,
+    padding: 14,
     alignItems: 'center',
   },
+  simulateButtonText: {
+    color: '#000000',
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  settingsSection: {
+    marginBottom: 12,
+    gap: 8,
+  },
+  settingsButton: {
+    backgroundColor: C.surfaceHigh,
+    borderRadius: 14,
+    padding: 14,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: C.border,
+  },
   settingsButtonText: {
-    color: 'white',
-    fontSize: 16,
+    color: C.textPrimary,
+    fontSize: 15,
+    fontWeight: '600',
   },
   info: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#e8f5e8',
-    borderRadius: 10,
-    marginBottom: 30,
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: C.surface,
+    borderRadius: 16,
+    marginBottom: 40,
+    borderWidth: 1,
+    borderColor: C.border,
+    gap: 6,
   },
   infoText: {
-    fontSize: 12,
-    color: '#2e7d32',
-    marginBottom: 5,
+    fontSize: 13,
+    color: C.textSecondary,
     fontWeight: '500',
   },
 
   // Modal styles
   modalContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: C.bg,
   },
   modalContent: {
-    padding: 30,
+    padding: 24,
     marginTop: 50,
   },
   modalTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: '800',
+    color: C.textPrimary,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 28,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 15,
+    fontWeight: '700',
     marginBottom: 10,
-    color: '#333',
+    color: C.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
   },
   timeSection: {
     marginTop: 20,
   },
   timeButton: {
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    padding: 15,
+    backgroundColor: C.surfaceHigh,
+    borderRadius: 14,
+    padding: 16,
     marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: C.border,
   },
   timeLabel: {
     fontSize: 16,
-    color: '#333',
+    color: C.textPrimary,
+    fontWeight: '500',
   },
   timeValue: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2196F3',
+    fontSize: 22,
+    fontWeight: '800',
+    color: C.blue,
   },
   soundOptionsSection: {
     marginBottom: 20,
   },
   soundOption: {
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    padding: 15,
-    marginBottom: 10,
+    backgroundColor: C.surfaceHigh,
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 8,
     borderWidth: 2,
-    borderColor: '#f5f5f5',
+    borderColor: C.border,
   },
   soundOptionSelected: {
-    borderColor: '#2196F3',
-    backgroundColor: '#e3f2fd',
+    borderColor: C.blue,
+    backgroundColor: C.blueDim,
   },
   soundOptionTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: '700',
+    color: C.textPrimary,
   },
   soundOptionDesc: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 13,
+    color: C.textSecondary,
     marginTop: 3,
   },
   volumeSection: {
@@ -1487,138 +1559,158 @@ const styles = StyleSheet.create({
   volumeButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 6,
   },
   volumeButton: {
     flex: 1,
-    padding: 15,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
+    padding: 14,
+    backgroundColor: C.surfaceHigh,
+    borderRadius: 12,
     alignItems: 'center',
-    marginHorizontal: 5,
+    borderWidth: 2,
+    borderColor: C.border,
   },
   volumeSelected: {
-    backgroundColor: '#2196F3',
+    backgroundColor: C.blueDim,
+    borderColor: C.blue,
   },
   testSoundButton: {
-    backgroundColor: '#FFC107',
-    borderRadius: 8,
-    padding: 15,
+    backgroundColor: C.amber,
+    borderRadius: 12,
+    padding: 16,
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 16,
   },
   testSoundButtonText: {
-    color: 'white',
+    color: '#000000',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '800',
   },
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+    gap: 10,
   },
   modalButton: {
     flex: 1,
-    padding: 15,
-    borderRadius: 8,
+    padding: 16,
+    borderRadius: 14,
     alignItems: 'center',
-    marginHorizontal: 5,
   },
   saveButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: C.green,
   },
   cancelButton: {
-    backgroundColor: '#f44336',
+    backgroundColor: C.surfaceHigh,
+    borderWidth: 1,
+    borderColor: C.border,
   },
   modalButtonText: {
-    color: 'white',
+    color: C.textPrimary,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
 
   // Onboarding styles
   onboardingContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: C.bg,
   },
   onboardingContent: {
-    padding: 30,
+    padding: 24,
     marginTop: 50,
   },
   onboardingTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#d32f2f',
+    fontSize: 26,
+    fontWeight: '800',
+    color: C.accent,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 28,
   },
   inputGroup: {
     marginBottom: 20,
   },
   inputLabel: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#333',
+    fontSize: 15,
+    marginBottom: 8,
+    color: C.textSecondary,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   permissionsSection: {
-    backgroundColor: '#f5f5f5',
-    borderRadius: 10,
-    padding: 15,
+    backgroundColor: C.surfaceHigh,
+    borderRadius: 16,
+    padding: 16,
     marginVertical: 20,
+    borderWidth: 1,
+    borderColor: C.border,
   },
   permissionsTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 15,
+    fontSize: 15,
+    fontWeight: '700',
+    marginBottom: 14,
+    color: C.textPrimary,
   },
   permissionItem: {
-    backgroundColor: 'white',
-    borderRadius: 8,
+    backgroundColor: C.surface,
+    borderRadius: 12,
     padding: 12,
-    marginBottom: 10,
+    marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: C.border,
   },
   permissionInfo: {
     flex: 1,
   },
   permissionName: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: '700',
+    color: C.textPrimary,
   },
   permissionDesc: {
     fontSize: 12,
-    color: '#666',
+    color: C.textSecondary,
     marginTop: 2,
   },
   permissionStatus: {
-    fontSize: 11,
-    color: '#999',
+    fontSize: 12,
+    color: C.textMuted,
     marginTop: 4,
+    fontWeight: '600',
   },
   permissionButton: {
-    backgroundColor: '#2196F3',
-    borderRadius: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    backgroundColor: C.blue,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
     marginLeft: 10,
   },
   permissionButtonText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
   },
   onboardingButton: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 10,
-    padding: 15,
+    backgroundColor: C.accent,
+    borderRadius: 16,
+    padding: 18,
     alignItems: 'center',
     marginTop: 20,
+    shadowColor: C.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 8,
   },
   onboardingButtonText: {
-    color: 'white',
+    color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
 });
