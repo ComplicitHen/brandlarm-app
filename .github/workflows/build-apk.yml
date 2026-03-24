@@ -27,7 +27,9 @@ jobs:
 
       - name: Installera npm-beroenden
         run: npm install --legacy-peer-deps
-        working-directory: .
+
+      - name: Generera Android-projekt (expo prebuild)
+        run: npx expo prebuild --platform android --clean --no-install
 
       - name: Gör gradlew körbart
         run: chmod +x android/gradlew
