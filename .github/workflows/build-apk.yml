@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Bygg APK (Gradle)
+    name: Bygg release-APK
     runs-on: ubuntu-latest
 
     steps:
@@ -31,16 +31,29 @@ jobs:
       - name: Generera Android-projekt (expo prebuild)
         run: npx expo prebuild --platform android --clean --no-install
 
-      - name: Gör gradlew körbart
-        run: chmod +x android/gradlew
+      - name: Återskapa signeringsnyckel
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 --decode > android/app/brandlarm-release.keystore
 
-      - name: Bygg debug-APK
-        run: ./gradlew assembleDebug --no-daemon
+      - name: Bygg release-APK (arm64 + Hermes)
+        env:
+          KEYSTORE_FILE: brandlarm-release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=brandlarm-release.keystore \
+            -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
+            -Pandroid.injected.signing.key.alias=$KEY_ALIAS \
+            -Pandroid.injected.signing.key.password=$KEY_PASSWORD \
+            -PabiFilters="arm64-v8a" \
+            --no-daemon
         working-directory: android
 
       - name: Ladda upp APK som artifact
         uses: actions/upload-artifact@v4
         with:
-          name: brandlarm-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: brandlarm-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
