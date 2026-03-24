@@ -18,7 +18,6 @@ import {
   NativeModules,
   NativeEventEmitter
 } from 'react-native';
-import * as SMS from 'expo-sms';
 import * as Notifications from 'expo-notifications';
 import { Audio } from 'expo-av';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -280,30 +279,29 @@ export default function App() {
   const requestBatteryOptimization = async () => {
     try {
       if (Platform.OS === 'android') {
-        Alert.alert(
-          'Batterioptimering',
-          'För att appen ska fungera i bakgrunden behöver du inaktivera batterioptimering för denna app.',
-          [
-            { text: 'Avbryt', style: 'cancel' },
-            {
-              text: 'Öppna inställningar',
-              onPress: async () => {
-                try {
-                  await IntentLauncher.startActivityAsync(
-                    IntentLauncher.ActivityAction.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
-                  );
-                } catch (error) {
-                  Linking.openSettings();
-                }
-              }
-            }
-          ]
-        );
-
-        const newPermissions = { ...permissions };
-        newPermissions.battery = { granted: true, checked: true };
-        setPermissions(newPermissions);
-        await AsyncStorage.setItem('permissions', JSON.stringify(newPermissions));
+        const packageName = 'com.brandkaren.larmapp';
+        try {
+          // Öppnar direkt dialog för ATT ignorera batterioptimering för denna app
+          await IntentLauncher.startActivityAsync(
+            IntentLauncher.ActivityAction.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+            { data: `package:${packageName}` }
+          );
+          // Sätts som granted efter att dialogen stängts (oavsett val)
+          const newPermissions = { ...permissions };
+          newPermissions.battery = { granted: true, checked: true };
+          setPermissions(newPermissions);
+          await AsyncStorage.setItem('permissions', JSON.stringify(newPermissions));
+        } catch (error) {
+          console.log('Direkt intent misslyckades, öppnar lista:', error);
+          // Fallback: öppna listan med alla appar
+          try {
+            await IntentLauncher.startActivityAsync(
+              IntentLauncher.ActivityAction.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+            );
+          } catch (e) {
+            Linking.openSettings();
+          }
+        }
       }
       return true;
     } catch (error) {

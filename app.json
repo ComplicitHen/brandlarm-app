@@ -32,7 +32,7 @@
       },
       "package": "com.brandkaren.larmapp",
       "versionCode": 4,
-      "permissions": ["READ_SMS", "RECEIVE_SMS", "VIBRATE"]
+      "permissions": ["READ_SMS", "RECEIVE_SMS", "VIBRATE", "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
