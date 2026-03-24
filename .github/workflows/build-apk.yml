@@ -37,13 +37,12 @@ jobs:
 
       - name: Bygg release-APK (arm64 + Hermes)
         env:
-          KEYSTORE_FILE: brandlarm-release.keystore
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=brandlarm-release.keystore \
+            -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/android/app/brandlarm-release.keystore \
             -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
             -Pandroid.injected.signing.key.alias=$KEY_ALIAS \
             -Pandroid.injected.signing.key.password=$KEY_PASSWORD \
