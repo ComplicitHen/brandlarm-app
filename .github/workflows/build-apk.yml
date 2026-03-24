@@ -7,38 +7,38 @@ on:
 
 jobs:
   build:
-    name: Bygg APK (EAS)
+    name: Bygg APK (Gradle)
     runs-on: ubuntu-latest
 
     steps:
       - name: Checka ut kod
         uses: actions/checkout@v4
 
-      - name: Sätt upp Node.js
+      - name: Sätt upp Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Sätt upp Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      - name: Installera beroenden
+      - name: Installera npm-beroenden
         run: npm install --legacy-peer-deps
+        working-directory: .
 
-      - name: Sätt upp Expo / EAS CLI
-        run: npm install -g eas-cli
+      - name: Gör gradlew körbart
+        run: chmod +x android/gradlew
 
-      - name: Bygg APK via EAS
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: |
-          eas build \
-            --platform android \
-            --profile preview \
-            --non-interactive \
-            --output ./brandlarm-ny.apk
+      - name: Bygg debug-APK
+        run: ./gradlew assembleDebug --no-daemon
+        working-directory: android
 
       - name: Ladda upp APK som artifact
         uses: actions/upload-artifact@v4
         with:
-          name: brandlarm-apk
-          path: brandlarm-ny.apk
+          name: brandlarm-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
